@@ -38,7 +38,11 @@ class Items extends Component {
             if (loading) return <p>Loading...</p>;
             if (error) return <p>Error: {error.message}</p>;
             return (
-              <ItemsList>{data.items.map(item => <Item item={item} key={item.id} />)}</ItemsList>
+              <ItemsList>
+                {data.items.map(item => (
+                  <Item item={item} key={item.id} />
+                ))}
+              </ItemsList>
             );
           }}
         </Query>
@@ -46,5 +50,5 @@ class Items extends Component {
     );
   }
 }
-
+export { ALL_ITEMS_QUERY };
 export default Items;
