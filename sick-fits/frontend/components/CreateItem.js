@@ -5,6 +5,8 @@ import Router from 'next/router';
 import Form from './styles/Form';
 import Error from './ErrorMessage';
 
+import { cloudinaryEndpoint } from '../config';
+
 const CREATE_ITEM_MUTATION = gql`
   mutation CREATE_ITEM_MUTATION(
     $title: String!
@@ -41,23 +43,35 @@ class CreateItem extends Component {
   };
 
   uploadFile = async e => {
-
     const files = e.target.files;
     const data = new FormData();
     data.append('file', files[0]);
     data.append('upload_preset', 'sickfits');
 
-    const res = await fetch('https://api.cloudinary.com/v1_1/lizzard/image/upload', {
+    const res = await fetch(cloudinaryEndpoint, {
       method: 'POST',
-      body: data,
+      body: data
     });
     const file = await res.json();
 
     this.setState({
       image: file.secure_url,
-      largeImage: file.eager[0].secure_url,
+      largeImage: file.eager[0].secure_url
     });
   };
+
+  createItem = async (e, createItemMutation) => {
+    e.preventDefault();
+    const res = await createItemMutation();
+    Router.push(
+      {
+        pathname: '/item',
+        query: { id: res.data.createItem.id }
+      },
+      `/item/${res.data.createItem.id}`
+    );
+  };
+
   render() {
     return (
       <Mutation
@@ -66,28 +80,14 @@ class CreateItem extends Component {
       >
         {(createItem, { loading, error }) => (
           <Form
-            onSubmit={async e => {
-              // Stop the form from submitting
-              e.preventDefault();
-              // call the mutation
-              const res = await createItem();
-              // change them to the single item page
-              console.log(res);
-              Router.push(
-                {
-                  pathname: '/item',
-                  query: { id: res.data.createItem.id }
-                },
-                `/item/${res.data.createItem.id}`
-              );
-            }}
+            onSubmit={e => this.createItem(e, createItem)}
           >
             <Error error={error} />
             <fieldset
               disabled={loading}
               aria-busy={loading}
             >
-            <label htmlFor="file">
+              <label htmlFor="file">
                 Image
                 <input
                   type="file"
@@ -98,7 +98,11 @@ class CreateItem extends Component {
                   onChange={this.uploadFile}
                 />
                 {this.state.image && (
-                  <img width="200" src={this.state.image} alt="Upload Preview" />
+                  <img
+                    width="200"
+                    src={this.state.image}
+                    alt="Upload Preview"
+                  />
                 )}
               </label>
               <label htmlFor="title">
