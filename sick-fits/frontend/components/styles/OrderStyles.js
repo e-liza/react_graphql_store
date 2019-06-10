@@ -11,7 +11,8 @@ const OrderStyles = styled.div`
     display: grid;
     grid-template-columns: 1fr 5fr;
     margin: 0;
-    border-bottom: 1px solid ${props => props.theme.offWhite};
+    border-bottom: 1px solid
+      ${props => props.theme.offWhite};
     span {
       padding: 1rem;
       &:first-child {
@@ -21,7 +22,8 @@ const OrderStyles = styled.div`
     }
   }
   .order-item {
-    border-bottom: 1px solid ${props => props.theme.offWhite};
+    border-bottom: 1px solid
+      ${props => props.theme.offWhite};
     display: grid;
     grid-template-columns: 300px 1fr;
     align-items: center;
@@ -30,7 +32,6 @@ const OrderStyles = styled.div`
     padding-bottom: 2rem;
     img {
       width: 100%;
-      height: 100%;
       object-fit: cover;
     }
   }
