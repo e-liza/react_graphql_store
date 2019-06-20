@@ -29,11 +29,11 @@ const CREATE_ITEM_MUTATION = gql`
 
 class CreateItem extends Component {
   state = {
-    title: 'Cool Shoes',
-    description: 'I love those shoes',
+    title: '',
+    description: '',
     image: '',
     largeImage: '',
-    price: 1000
+    price: 0
   };
   handleChange = e => {
     const { name, type, value } = e.target;
@@ -80,6 +80,7 @@ class CreateItem extends Component {
       >
         {(createItem, { loading, error }) => (
           <Form
+            data-test="form"
             onSubmit={e => this.createItem(e, createItem)}
           >
             <Error error={error} />

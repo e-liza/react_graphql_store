@@ -9,7 +9,7 @@ import Signout from './Signout';
 const Nav = () => (
   <User>
     {({ data: { me } }) => (
-      <NavStyles>
+      <NavStyles data-test="nav">
         <Link href="/items">
           <a>Shop</a>
         </Link>
@@ -26,10 +26,16 @@ const Nav = () => (
             </Link>
             <Signout />
             <Mutation mutation={TOGGLE_CART_MUTATION}>
-              {(toggleCart) => (
+              {toggleCart => (
                 <button onClick={toggleCart}>
                   My Cart
-                  <CartCount count={me.cart.reduce((tally, cartItem) => tally + cartItem.quantity, 0)}></CartCount>
+                  <CartCount
+                    count={me.cart.reduce(
+                      (tally, cartItem) =>
+                        tally + cartItem.quantity,
+                      0
+                    )}
+                  />
                 </button>
               )}
             </Mutation>
@@ -39,7 +45,6 @@ const Nav = () => (
           <Link href="/signup">
             <a>Sign In</a>
           </Link>
-
         )}
       </NavStyles>
     )}
